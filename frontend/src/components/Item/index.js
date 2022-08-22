@@ -48,6 +48,7 @@ class Item extends React.Component {
       <div className="container page">
         <div className="text-dark">
           <div className="row bg-white p-4">
+            { this.props.item.image ? (
             <div className="col-6">
               <img
                 src={this.props.item.image}
@@ -56,6 +57,7 @@ class Item extends React.Component {
                 style={{ height: "500px", width: "100%", borderRadius: "6px" }}
               />
             </div>
+            ) : '' }
 
             <div className="col-6">
               <h1>{this.props.item.title}</h1>
