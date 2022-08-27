@@ -9,15 +9,17 @@ var User = mongoose.model("User");
 var Item = mongoose.model("Item");
 var Comment = mongoose.model("Comment");
 
-User.deleteMany().then(() => {
-    Item.deleteMany().then(() => {
-        Comment.deleteMany().then(() => {
-            seed();
-        })
-    });
-});
+seed()
 
-function seed() {
+async function seed() {
+    await User.deleteMany();
+    await Item.deleteMany();
+    await Comment.deleteMany();
+    await seedInner();
+    process.exit(1);
+}
+
+async function seedInner() {
     const total = 100;
 
     for (var i = 0; i < total; i++) {
@@ -27,27 +29,21 @@ function seed() {
         user.username = userSlug;
         user.email = userSlug + "@anythink.com";
         user.setPassword(userSlug);
-    
-        user.save()
-            .then(() => {
-                const item = new Item();
-                item.slug = user.username;
-                item.title = "Item title " + userSlug;
-                item.seller = user;
+        await user.save();
 
-                item.save()
-                    .then(() => {
-                        const comment = new Comment();
-                        comment.body = "This is a comment";
-                        comment.item = item;
-                        comment.seller = item.seller;
+        const item = new Item();
+        item.slug = user.username;
+        item.title = "Item title " + userSlug;
+        item.seller = user;
+        await item.save();
 
-                        comment.save()
-                            .then(() => {
-                                console.log(userSlug + " creation completed");
-                            })
-                    });
-            })
+        const comment = new Comment();
+        comment.body = "This is a comment";
+        comment.item = item;
+        comment.seller = item.seller;
+        await comment.save();
+
+        console.log(userSlug + " creation completed");
         
     }
 }
