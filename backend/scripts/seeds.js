@@ -9,14 +9,14 @@ var User = mongoose.model("User");
 var Item = mongoose.model("Item");
 var Comment = mongoose.model("Comment");
 
-seed()
+seed();
 
 async function seed() {
     await User.deleteMany();
     await Item.deleteMany();
     await Comment.deleteMany();
     await seedInner();
-    process.exit(1);
+    process.exit(0);
 }
 
 async function seedInner() {
