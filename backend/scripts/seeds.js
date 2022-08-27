@@ -18,7 +18,7 @@ User.deleteMany().then(() => {
 });
 
 function seed() {
-    const total = 20;
+    const total = 100;
 
     for (var i = 0; i < total; i++) {
         const userSlug = "test" + i;
